@@ -1,0 +1,68 @@
+In this lab, you will create a simple currency converter application using React. 
+This app will allow users to convert a value from one currency to another by fetching real-time exchange rates from an API.
+
+
+
+import { useState } from 'react';
+
+export default function App() {
+  const [currencyValue, setCurrencyValue] = useState('');
+  const [from, setFrom] = useState('USD');
+  const [to, setTo] = useState('INR');
+  const [error, setError] = useState('');
+
+  const convertHandler = () => {
+    setError('');  // Clear previous errors
+    fetch(`https://open.er-api.com/v6/latest/${from}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const rate = data.rates[to];
+        if (!rate) {
+          throw new Error(`Invalid currency code: ${to}`);
+        }
+        const convertedValue = 1 * rate;
+        setCurrencyValue(convertedValue);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  return (
+    <>
+      <input
+        type="text"
+        id="from"
+        maxLength="3"
+        value={from}
+        placeholder="From: e.g., USD"
+        className="border focus:outline-none mb-4 mr-4 uppercase"
+        onChange={(e) => setFrom(e.target.value)}
+      />
+      <input
+        type="text"
+        id="to"
+        maxLength="3"
+        placeholder="To: e.g., EUR"
+        className="border focus:outline-none mb-4 uppercase"
+        onChange={(e) => setTo(e.target.value)}
+        value={to}
+      />
+      <button
+        id="convert"
+        className="block w-20 text-white bg-black mb-4 py-2"
+        onClick={convertHandler}
+      >
+        Convert
+      </button>
+
+      <div id="currencyValue">{currencyValue}</div>
+      {error && <div id="error" className="text-red-500">{error}</div>}
+    </>
+  );
+}
