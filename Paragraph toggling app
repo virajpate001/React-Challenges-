@@ -1,0 +1,32 @@
+In this lab, you will be developing a simple React application that toggles the visibility of a paragraph. 
+You'll be testing your skills in handling user interactions and managing component states in React.
+
+
+
+
+
+
+import { useState } from 'react';
+
+function App() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleToggle = () => {
+    setIsVisible(prevVisible => !prevVisible);
+  };
+
+  return (
+    <div>
+      {isVisible ? (
+        <p id="my-paragraph">This is the paragraph you can toggle.</p>
+      ) : (
+        null
+      )}
+      <button id="toggle-btn" onClick={handleToggle}>
+        Toggle Paragraph
+      </button>
+    </div>
+  );
+}
+
+export default App;
