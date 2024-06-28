@@ -1,0 +1,48 @@
+In this lab, you'll create a simple application using React that calculates
+the Equated Monthly Installment (EMI) based on the total loan amount and the number of monthly payments.
+
+
+
+import { useState } from 'react'
+
+export default function App() {
+	const [totalcost, setTotalcost] = useState('')
+	const [nointervals, setNointervals] = useState('')
+	const [output, setoutput] = useState()
+	let result
+
+	const clickHandler = () => {
+		result = parseFloat(totalcost / nointervals).toFixed(2)
+		setoutput(result)
+	}
+
+	return (
+		<>
+			<input
+				type="number"
+				name="totalcost"
+				id="totalCost"
+				className="border"
+				value={totalcost}
+				onChange={(e) => setTotalcost(e.target.value)}
+			/>
+			<input
+				type="number"
+				name="nointervals"
+				id="numberOfIntervals"
+				className="border"
+				value={nointervals}
+				onChange={(e) => setNointervals(e.target.value)}
+			/>
+			<div id="output">{output}</div>
+			<button
+				id="calculate"
+				className="bg-black text-white p-2"
+				onClick={clickHandler}
+			>
+				Calculate
+			</button>
+		</>
+	)
+}
+
